@@ -8,7 +8,7 @@ create table if not exists public.grupos (
   valor text,
   data_evento text,
   sorteado boolean not null default false,
-  premium boolean not null default false, -- liberado manualmente após pagamento (grupos com mais de 50)
+  premium boolean not null default false, -- liberado manualmente após pagamento (grupos com mais de 10)
   criado_em timestamptz not null default now()
 );
 
@@ -65,7 +65,7 @@ begin
   select * into g from grupos where admin_token = p_admin;
   if not found then raise exception 'Grupo não encontrado'; end if;
   if g.sorteado then raise exception 'O sorteio já foi feito. Desfaça o sorteio para adicionar pessoas.'; end if;
-  if (select count(*) from participantes where grupo_id = g.id) >= (case when g.premium then 500 else 50 end) then
+  if (select count(*) from participantes where grupo_id = g.id) >= (case when g.premium then 500 else 10 end) then
     raise exception using message = case when g.premium then 'Limite de 500 participantes'
       else 'LIMITE_GRATIS' end; end if;
   insert into participantes(grupo_id, nome, contato)
