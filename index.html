@@ -74,8 +74,8 @@ const SUPABASE_URL = "https://sdjeaddpdoldbnlsctuj.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamVhZGRwZG9sZGJubHNjdHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3ODExODIsImV4cCI6MjExMDM1NzE4Mn0.WZMLed5H-gvttN_97ks4Tv4TuZNm5aIGVuF4jQrDsD0";
 // Grupos com mais de 10 pessoas são pagos. Preencha para mostrar as instruções de pagamento.
 const PRECO_GRUPO_GRANDE = "9.90"; // valor em reais, com ponto
-const PIX_CHAVE = "3f356cfd-d741-4f48-8a83-37194168820f";
-const CONTATO_PAGAMENTO = "geanineiandra@gmail.com";
+const PIX_CHAVE = "geaninesilva.ds@gmail.com";
+const CONTATO_PAGAMENTO = "";
 // ==========================
 
 const $app = document.getElementById("app");
@@ -300,11 +300,10 @@ function limiteMsg(codigo) {
   });
   return `<div class="card" style="margin-top:12px;border-color:#d6e0d3;background:#f1f5ef">
     <b>O plano grátis vai até 10 pessoas.</b>
-    <p style="margin:6px 0">Para liberar este grupo (até 500 pessoas), pague <b>${esc(preco)}</b> no Pix pelo QR code ou pelo copia e cola.
-    ${CONTATO_PAGAMENTO ? `Depois mande o comprovante para <b>${esc(CONTATO_PAGAMENTO)}</b> com o código <b>${esc(codigo)}</b>.` : `Guarde o código do grupo: <b>${esc(codigo)}</b>.`}
-    O grupo é liberado logo após a confirmação.</p>
+    <p style="margin:6px 0">Para liberar este grupo (até 500 pessoas), pague <b>${esc(preco)}</b> no Pix pelo QR code abaixo ou pelo botão de copiar.
+    Se o seu banco permitir, escreva o código <b>${esc(codigo)}</b> na mensagem do Pix. O grupo é liberado assim que o pagamento for confirmado.</p>
     <div id="pixqr" style="display:flex;justify-content:center;margin:12px 0"></div>
-    <div class="linkbox"><input readonly value="${esc(payload)}"><button type="button" class="sm sec" id="pixcopy">Copiar Pix</button></div>
+    <button type="button" class="sec full" id="pixcopy">Copiar código Pix</button>
   </div>`;
 }
 
