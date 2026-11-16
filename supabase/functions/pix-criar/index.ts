@@ -14,7 +14,8 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ message: "Método não permitido" }, 405);
 
-  const token = Deno.env.get("MP_ACCESS_TOKEN");
+  const token = (Deno.env.get("MP_ACCESS_TOKEN") || "").replace(/^\s*(MP_ACCESS_TOKEN\s*=\s*)?(Bearer\s+)?["']?/i, "").replace(/["']?\s*$/, "");
+  console.log("token ok?", token.startsWith("APP_USR-"), token.length);
   if (!token) return json({ message: "Pagamento ainda não configurado" }, 503);
 
   let body: { admin_token?: string; email?: string };
