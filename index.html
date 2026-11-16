@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Amigo Secreto</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <meta name="description" content="Sorteio de amigo secreto com lista de desejos e envio por WhatsApp ou e-mail.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23a9bea7'/><path d='M50 18l8 18 20 2-15 13 5 20-18-11-18 11 5-20-15-13 20-2z' fill='%23fbfcf9'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,10 +71,8 @@
 // ====== CONFIGURAÇÃO ======
 const SUPABASE_URL = "https://sdjeaddpdoldbnlsctuj.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamVhZGRwZG9sZGJubHNjdHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3ODExODIsImV4cCI6MjExMDM1NzE4Mn0.WZMLed5H-gvttN_97ks4Tv4TuZNm5aIGVuF4jQrDsD0";
-// Grupos com mais de 10 pessoas são pagos. Preencha para mostrar as instruções de pagamento.
-const PRECO_GRUPO_GRANDE = "9.90"; // valor em reais, com ponto
-const PIX_CHAVE = "geaninesilva.ds@gmail.com";
-const CONTATO_PAGAMENTO = "";
+// Grupos com mais de 10 pessoas pagam R$ 9,90 (Pix do Mercado Pago, liberação automática).
+const LIMITE_GRATIS = 10;
 // ==========================
 
 const $app = document.getElementById("app");
@@ -212,7 +209,7 @@ async function renderAdmin(admin) {
       </form>
     </div>`}
     <div class="card">
-      <h2>Participantes (${n}${g.premium ? "" : " de 10 grátis"})</h2>
+      <h2>Participantes (${n}${g.premium ? "" : ` de ${LIMITE_GRATIS} grátis`})</h2>
       ${n ? `<p class="muted" style="margin-top:-6px">${comDesejos} de ${n} já preencheram a lista de desejos.</p><ul class="people">${people}</ul>` : `<p class="muted">Ninguém ainda. Adicione pelo menos 3 pessoas.</p>`}
     </div>
     <div class="card">
@@ -249,7 +246,7 @@ async function renderAdmin(admin) {
       await renderAdmin(admin);
       document.getElementById("pn")?.focus();
     } catch (err) {
-      if (err.message === "LIMITE_GRATIS") document.getElementById("addmsg").innerHTML = limiteMsg(g.codigo);
+      if (err.message === "LIMITE_GRATIS") mostrarPagamento(admin, g.codigo);
       else showErr("addmsg", err);
       btn.disabled = false;
     }
@@ -273,38 +270,66 @@ async function renderAdmin(admin) {
   }
 }
 
-// Pix "copia e cola" (BR Code estático)
-function pixPayload(chave, valor, txid) {
-  const f = (id, v) => id + String(v.length).padStart(2, "0") + v;
-  const conta = f("00", "br.gov.bcb.pix") + f("01", chave);
-  let p = f("00", "01") + f("26", conta) + f("52", "0000") + f("53", "986") + f("54", valor) +
-          f("58", "BR") + f("59", "AMIGO SECRETO") + f("60", "SAO PAULO") + f("62", f("05", txid)) + "6304";
-  let crc = 0xFFFF;
-  for (let i = 0; i < p.length; i++) { crc ^= p.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF; }
-  return p + crc.toString(16).toUpperCase().padStart(4, "0");
+// Pagamento para liberar grupo grande (Mercado Pago)
+function pagamentoHTML(codigo) {
+  return `<div class="card" id="paybox" style="margin-top:12px;background:#f1f5ef">
+    <b>O plano grátis vai até ${LIMITE_GRATIS} pessoas.</b>
+    <p style="margin:6px 0">Para liberar este grupo (até 500 pessoas), pague <b>R$ 9,90</b> no Pix. O grupo é liberado sozinho assim que o pagamento cair.</p>
+    <form id="payf">
+      <label for="payemail">Seu e-mail (para o recibo do Mercado Pago)</label>
+      <input id="payemail" type="email" required placeholder="voce@email.com">
+      <button class="full" type="submit">Gerar Pix</button>
+    </form>
+    <div id="payqr" class="hidden" style="text-align:center">
+      <img id="payimg" alt="QR code do Pix" style="width:220px;height:220px;margin:12px auto;display:block;background:#fff;padding:8px;border-radius:10px">
+      <button type="button" class="sec full" id="paycopy">Copiar código Pix</button>
+      <p class="muted" id="paystatus" style="margin-top:12px">Aguardando o pagamento…</p>
+    </div>
+    <div id="paymsg"></div>
+  </div>`;
 }
 
-function limiteMsg(codigo) {
-  const box = document.createElement("div");
-  if (!(PRECO_GRUPO_GRANDE && PIX_CHAVE)) {
-    box.innerHTML = `<div class="err"><b>O plano grátis vai até 10 pessoas.</b> Grupos maiores serão um recurso pago em breve.</div>`;
-    return box.innerHTML;
-  }
-  const txid = "GRUPO" + String(codigo).replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-  const payload = pixPayload(PIX_CHAVE, PRECO_GRUPO_GRANDE, txid);
-  const preco = "R$ " + PRECO_GRUPO_GRANDE.replace(".", ",");
-  setTimeout(() => {
-    const el = document.getElementById("pixqr");
-    if (el && window.QRCode) new QRCode(el, { text: payload, width: 200, height: 200 });
-    const b = document.getElementById("pixcopy"); if (b) b.onclick = () => copy(payload, b);
-  });
-  return `<div class="card" style="margin-top:12px;border-color:#d6e0d3;background:#f1f5ef">
-    <b>O plano grátis vai até 10 pessoas.</b>
-    <p style="margin:6px 0">Para liberar este grupo (até 500 pessoas), pague <b>${esc(preco)}</b> no Pix pelo QR code abaixo ou pelo botão de copiar.
-    Se o seu banco permitir, escreva o código <b>${esc(codigo)}</b> na mensagem do Pix. O grupo é liberado assim que o pagamento for confirmado.</p>
-    <div id="pixqr" style="display:flex;justify-content:center;margin:12px 0"></div>
-    <button type="button" class="sec full" id="pixcopy">Copiar código Pix</button>
-  </div>`;
+function mostrarPagamento(admin, codigo) {
+  document.getElementById("paybox")?.remove();
+  document.getElementById("addf").insertAdjacentHTML("afterend", pagamentoHTML(codigo));
+  ligarPagamento(admin);
+}
+
+function ligarPagamento(admin) {
+  const f = document.getElementById("payf"); if (!f) return;
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const btn = f.querySelector("button"); btn.disabled = true;
+    document.getElementById("paymsg").innerHTML = "";
+    try {
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/pix-criar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        body: JSON.stringify({ admin_token: admin, email: document.getElementById("payemail").value })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.message || "Erro ao gerar o Pix");
+      if (d.premium) { renderAdmin(admin); return; }
+      f.classList.add("hidden");
+      document.getElementById("payimg").src = "data:image/png;base64," + d.qr_code_base64;
+      document.getElementById("payqr").classList.remove("hidden");
+      const cp = document.getElementById("paycopy"); cp.onclick = () => copy(d.qr_code, cp);
+      const timer = setInterval(async () => {
+        if (!document.getElementById("paybox")) { clearInterval(timer); return; }
+        try {
+          const g = await rpc("ver_grupo", { p_admin: admin });
+          if (g.premium) {
+            clearInterval(timer);
+            document.getElementById("paystatus").innerHTML = `<span class="ok" style="display:block">Pagamento confirmado. Grupo liberado!</span>`;
+            setTimeout(() => renderAdmin(admin), 1500);
+          }
+        } catch {}
+      }, 4000);
+    } catch (err) {
+      document.getElementById("paymsg").innerHTML = `<div class="err">${esc(err.message)}</div>`;
+      btn.disabled = false;
+    }
+  };
 }
 
 // ---------- Página do participante ----------

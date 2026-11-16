@@ -141,3 +141,19 @@ grant execute on function public.criar_grupo(text,text,text), public.ver_grupo(t
   public.adicionar_participante(text,text,text), public.remover_participante(text,uuid),
   public.sortear(text), public.desfazer_sorteio(text), public.ver_participante(text),
   public.salvar_desejos(text,text) to anon, authenticated;
+
+-- Pagamentos do Mercado Pago (liberação automática de grupos grandes)
+create table if not exists public.pagamentos (
+  mp_id bigint primary key,
+  grupo_id uuid not null references public.grupos(id) on delete cascade,
+  status text not null,
+  valor numeric(10,2) not null,
+  qr_code text,
+  qr_code_base64 text,
+  expira_em timestamptz,
+  criado_em timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+create index if not exists pagamentos_grupo_idx on public.pagamentos(grupo_id);
+alter table public.pagamentos enable row level security;
+revoke all on public.pagamentos from anon, authenticated;
