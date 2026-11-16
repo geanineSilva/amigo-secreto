@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo Secreto</title>
+<meta name="description" content="Sorteio de amigo secreto com lista de desejos e envio por WhatsApp ou e-mail.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23a9bea7'/><path d='M50 18l8 18 20 2-15 13 5 20-18-11-18 11 5-20-15-13 20-2z' fill='%23fbfcf9'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --wreath: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><g opacity='.45'><ellipse cx='84.0' cy='60.0' rx='7.0' ry='3.2' transform='rotate(60 84.0 60.0)' fill='%2390a98f'/><ellipse cx='79.6' cy='63.8' rx='6.0' ry='2.6' transform='rotate(-39 79.6 63.8)' fill='%23a9bea7'/><ellipse cx='82.2' cy='69.2' rx='7.0' ry='3.2' transform='rotate(82 82.2 69.2)' fill='%2390a98f'/><ellipse cx='76.7' cy='71.0' rx='6.0' ry='2.6' transform='rotate(-16 76.7 71.0)' fill='%23a9bea7'/><ellipse cx='77.0' cy='77.0' rx='7.0' ry='3.2' transform='rotate(105 77.0 77.0)' fill='%2390a98f'/><ellipse cx='71.2' cy='76.6' rx='6.0' ry='2.6' transform='rotate(6 71.2 76.6)' fill='%23a9bea7'/><ellipse cx='69.2' cy='82.2' rx='7.0' ry='3.2' transform='rotate(128 69.2 82.2)' fill='%2390a98f'/><ellipse cx='64.0' cy='79.6' rx='6.0' ry='2.6' transform='rotate(28 64.0 79.6)' fill='%23a9bea7'/><ellipse cx='60.0' cy='84.0' rx='7.0' ry='3.2' transform='rotate(150 60.0 84.0)' fill='%2390a98f'/><ellipse cx='56.2' cy='79.6' rx='6.0' ry='2.6' transform='rotate(51 56.2 79.6)' fill='%23a9bea7'/><ellipse cx='50.8' cy='82.2' rx='7.0' ry='3.2' transform='rotate(172 50.8 82.2)' fill='%2390a98f'/><ellipse cx='49.0' cy='76.7' rx='6.0' ry='2.6' transform='rotate(74 49.0 76.7)' fill='%23a9bea7'/><ellipse cx='43.0' cy='77.0' rx='7.0' ry='3.2' transform='rotate(195 43.0 77.0)' fill='%2390a98f'/><ellipse cx='43.4' cy='71.2' rx='6.0' ry='2.6' transform='rotate(96 43.4 71.2)' fill='%23a9bea7'/><ellipse cx='37.8' cy='69.2' rx='7.0' ry='3.2' transform='rotate(218 37.8 69.2)' fill='%2390a98f'/><ellipse cx='40.4' cy='64.0' rx='6.0' ry='2.6' transform='rotate(118 40.4 64.0)' fill='%23a9bea7'/><ellipse cx='36.0' cy='60.0' rx='7.0' ry='3.2' transform='rotate(240 36.0 60.0)' fill='%2390a98f'/><ellipse cx='40.4' cy='56.2' rx='6.0' ry='2.6' transform='rotate(141 40.4 56.2)' fill='%23a9bea7'/><ellipse cx='37.8' cy='50.8' rx='7.0' ry='3.2' transform='rotate(262 37.8 50.8)' fill='%2390a98f'/><ellipse cx='43.3' cy='49.0' rx='6.0' ry='2.6' transform='rotate(164 43.3 49.0)' fill='%23a9bea7'/><ellipse cx='43.0' cy='43.0' rx='7.0' ry='3.2' transform='rotate(285 43.0 43.0)' fill='%2390a98f'/><ellipse cx='48.8' cy='43.4' rx='6.0' ry='2.6' transform='rotate(186 48.8 43.4)' fill='%23a9bea7'/><ellipse cx='50.8' cy='37.8' rx='7.0' ry='3.2' transform='rotate(308 50.8 37.8)' fill='%2390a98f'/><ellipse cx='56.0' cy='40.4' rx='6.0' ry='2.6' transform='rotate(208 56.0 40.4)' fill='%23a9bea7'/><ellipse cx='60.0' cy='36.0' rx='7.0' ry='3.2' transform='rotate(330 60.0 36.0)' fill='%2390a98f'/><ellipse cx='63.8' cy='40.4' rx='6.0' ry='2.6' transform='rotate(231 63.8 40.4)' fill='%23a9bea7'/><ellipse cx='69.2' cy='37.8' rx='7.0' ry='3.2' transform='rotate(352 69.2 37.8)' fill='%2390a98f'/><ellipse cx='71.0' cy='43.3' rx='6.0' ry='2.6' transform='rotate(254 71.0 43.3)' fill='%23a9bea7'/><ellipse cx='77.0' cy='43.0' rx='7.0' ry='3.2' transform='rotate(375 77.0 43.0)' fill='%2390a98f'/><ellipse cx='76.6' cy='48.8' rx='6.0' ry='2.6' transform='rotate(276 76.6 48.8)' fill='%23a9bea7'/><ellipse cx='82.2' cy='50.8' rx='7.0' ry='3.2' transform='rotate(398 82.2 50.8)' fill='%2390a98f'/><ellipse cx='79.6' cy='56.0' rx='6.0' ry='2.6' transform='rotate(298 79.6 56.0)' fill='%23a9bea7'/><circle cx='82.6' cy='68.2' r='2.2' fill='%23d8c48f'/><circle cx='59.2' cy='84.0' r='2.2' fill='%23d8c48f'/><circle cx='36.9' cy='66.6' r='2.2' fill='%23d8c48f'/><circle cx='46.6' cy='40.1' r='2.2' fill='%23d8c48f'/><circle cx='74.8' cy='41.1' r='2.2' fill='%23d8c48f'/><path d='M60 84 l-9 -5 v10 z M60 84 l9 -5 v10 z' fill='%23cdb57a'/><circle cx='60' cy='84' r='2.5' fill='%23b89c5c'/><ellipse cx='198.0' cy='180.0' rx='5.6' ry='2.6' transform='rotate(60 198.0 180.0)' fill='%2390a98f'/><ellipse cx='194.5' cy='182.8' rx='4.8' ry='2.1' transform='rotate(-39 194.5 182.8)' fill='%23a9bea7'/><ellipse cx='196.6' cy='186.9' rx='5.6' ry='2.6' transform='rotate(82 196.6 186.9)' fill='%2390a98f'/><ellipse cx='192.3' cy='188.2' rx='4.8' ry='2.1' transform='rotate(-16 192.3 188.2)' fill='%23a9bea7'/><ellipse cx='192.7' cy='192.7' rx='5.6' ry='2.6' transform='rotate(105 192.7 192.7)' fill='%2390a98f'/><ellipse cx='188.3' cy='192.3' rx='4.8' ry='2.1' transform='rotate(6 188.3 192.3)' fill='%23a9bea7'/><ellipse cx='186.9' cy='196.6' rx='5.6' ry='2.6' transform='rotate(128 186.9 196.6)' fill='%2390a98f'/><ellipse cx='183.0' cy='194.5' rx='4.8' ry='2.1' transform='rotate(28 183.0 194.5)' fill='%23a9bea7'/><ellipse cx='180.0' cy='198.0' rx='5.6' ry='2.6' transform='rotate(150 180.0 198.0)' fill='%2390a98f'/><ellipse cx='177.2' cy='194.5' rx='4.8' ry='2.1' transform='rotate(51 177.2 194.5)' fill='%23a9bea7'/><ellipse cx='173.1' cy='196.6' rx='5.6' ry='2.6' transform='rotate(172 173.1 196.6)' fill='%2390a98f'/><ellipse cx='171.8' cy='192.3' rx='4.8' ry='2.1' transform='rotate(74 171.8 192.3)' fill='%23a9bea7'/><ellipse cx='167.3' cy='192.7' rx='5.6' ry='2.6' transform='rotate(195 167.3 192.7)' fill='%2390a98f'/><ellipse cx='167.7' cy='188.3' rx='4.8' ry='2.1' transform='rotate(96 167.7 188.3)' fill='%23a9bea7'/><ellipse cx='163.4' cy='186.9' rx='5.6' ry='2.6' transform='rotate(218 163.4 186.9)' fill='%2390a98f'/><ellipse cx='165.5' cy='183.0' rx='4.8' ry='2.1' transform='rotate(118 165.5 183.0)' fill='%23a9bea7'/><ellipse cx='162.0' cy='180.0' rx='5.6' ry='2.6' transform='rotate(240 162.0 180.0)' fill='%2390a98f'/><ellipse cx='165.5' cy='177.2' rx='4.8' ry='2.1' transform='rotate(141 165.5 177.2)' fill='%23a9bea7'/><ellipse cx='163.4' cy='173.1' rx='5.6' ry='2.6' transform='rotate(262 163.4 173.1)' fill='%2390a98f'/><ellipse cx='167.7' cy='171.8' rx='4.8' ry='2.1' transform='rotate(164 167.7 171.8)' fill='%23a9bea7'/><ellipse cx='167.3' cy='167.3' rx='5.6' ry='2.6' transform='rotate(285 167.3 167.3)' fill='%2390a98f'/><ellipse cx='171.7' cy='167.7' rx='4.8' ry='2.1' transform='rotate(186 171.7 167.7)' fill='%23a9bea7'/><ellipse cx='173.1' cy='163.4' rx='5.6' ry='2.6' transform='rotate(308 173.1 163.4)' fill='%2390a98f'/><ellipse cx='177.0' cy='165.5' rx='4.8' ry='2.1' transform='rotate(208 177.0 165.5)' fill='%23a9bea7'/><ellipse cx='180.0' cy='162.0' rx='5.6' ry='2.6' transform='rotate(330 180.0 162.0)' fill='%2390a98f'/><ellipse cx='182.8' cy='165.5' rx='4.8' ry='2.1' transform='rotate(231 182.8 165.5)' fill='%23a9bea7'/><ellipse cx='186.9' cy='163.4' rx='5.6' ry='2.6' transform='rotate(352 186.9 163.4)' fill='%2390a98f'/><ellipse cx='188.2' cy='167.7' rx='4.8' ry='2.1' transform='rotate(254 188.2 167.7)' fill='%23a9bea7'/><ellipse cx='192.7' cy='167.3' rx='5.6' ry='2.6' transform='rotate(375 192.7 167.3)' fill='%2390a98f'/><ellipse cx='192.3' cy='171.7' rx='4.8' ry='2.1' transform='rotate(276 192.3 171.7)' fill='%23a9bea7'/><ellipse cx='196.6' cy='173.1' rx='5.6' ry='2.6' transform='rotate(398 196.6 173.1)' fill='%2390a98f'/><ellipse cx='194.5' cy='177.0' rx='4.8' ry='2.1' transform='rotate(298 194.5 177.0)' fill='%23a9bea7'/><circle cx='196.9' cy='186.2' r='1.8' fill='%23d8c48f'/><circle cx='179.4' cy='198.0' r='1.8' fill='%23d8c48f'/><circle cx='162.7' cy='185.0' r='1.8' fill='%23d8c48f'/><circle cx='169.9' cy='165.1' r='1.8' fill='%23d8c48f'/><circle cx='191.1' cy='165.8' r='1.8' fill='%23d8c48f'/><path d='M180 198 l-7.2 -4.0 v8.0 z M180 198 l7.2 -4.0 v8.0 z' fill='%23cdb57a'/><circle cx='180' cy='198' r='2.0' fill='%23b89c5c'/></g></svg>"); --bg:#e4ece1; --card:#fbfcf9; --ink:#2c3a2e; --muted:#667466; --pine:#5d7b60; --pine-d:#4a654d; --red:#5d7b60; --red-d:#4a654d; --gold:#bfa564; --green:#4a6b4e; --wa:#4f8a5b; --line:#d6e0d3; }
+  * { box-sizing: border-box; }
+  body { background-image:var(--wreath); background-size:240px 240px; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
+  .top { background: #c8d6c3 var(--wreath) 0 0/240px 240px; color:var(--ink); padding: 32px 16px 56px; text-align:center; border-bottom: 3px solid #b3c4ae; }
+  main { max-width: 640px; margin: -36px auto 0; padding: 0 16px 64px; }
+  header h1 { color:#3e5641; font-family: Fraunces, Georgia, serif; margin: 8px 0 4px; font-size: 2rem; font-weight:700; letter-spacing:.2px; }
+  header p { margin:0; color:var(--muted); }
+  .logo { display:flex; justify-content:center; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:16px; box-shadow: 0 2px 10px rgba(60,90,62,.08); }
+  .card h2 { font-family: Fraunces, Georgia, serif; margin:0 0 12px; font-size:1.25rem; font-weight:600; color:var(--pine); }
+  label { display:block; font-size:.88rem; font-weight:600; margin:12px 0 4px; }
+  input, textarea { width:100%; font:inherit; padding:11px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
+  input:focus, textarea:focus { outline: 2px solid var(--pine); border-color: transparent; }
+  textarea { min-height: 120px; resize: vertical; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; }
+  .row > * { flex:1 1 160px; }
+  button, .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; font:inherit; font-weight:600; border:0; border-radius:10px; padding:11px 16px; cursor:pointer; text-decoration:none; background:var(--red); color:#fff; }
+  button:hover, .btn:hover { background:var(--red-d); }
+  button:disabled { opacity:.5; cursor:default; }
+  .btn.sec, button.sec { background:#e3eadf; color:var(--ink); }
+  .btn.sec:hover, button.sec:hover { background:#d6e0d1; }
+  .btn.wa { background:var(--wa); } .btn.wa:hover { background:#177a42; }
+  .btn.sm, button.sm { padding:7px 11px; font-size:.85rem; border-radius:8px; }
+  .full { width:100%; margin-top:14px; }
+  .muted { color:var(--muted); font-size:.9rem; }
+  .err { background:#f1ede2; color:#6b5a2e; padding:10px 12px; border-radius:10px; margin-top:12px; }
+  .ok { background:#e2ecdf; color:var(--green); padding:10px 12px; border-radius:10px; margin-top:12px; }
+  .hidden { display:none !important; }
+  ul.people { list-style:none; padding:0; margin:0; }
+  ul.people li { border-top:1px solid var(--line); padding:12px 0; }
+  ul.people li:first-child { border-top:0; }
+  .pname { font-weight:600; }
+  .tag { display:inline-block; font-size:.75rem; padding:2px 8px; border-radius:99px; background:#e3eadf; color:var(--muted); margin-left:6px; font-weight:500; }
+  .tag.yes { background:#d3e3cf; color:var(--green); }
+  .actions { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .linkbox { display:flex; gap:6px; margin-top:8px; }
+  .linkbox input { font-size:.85rem; }
+  .reveal { text-align:center; padding: 28px 16px; border-radius:14px; background: #6f8c71 var(--wreath) 0 0/240px 240px; color:#fbfcf9; border: 2px solid #d8c48f; }
+  .reveal .big { font-family: Fraunces, Georgia, serif; font-size: 2.2rem; font-weight:700; margin: 6px 0 10px; color:#fff6dc; }
+  .wishes { white-space: pre-wrap; background:var(--card); border-radius:10px; padding:12px 14px; margin-top:10px; color:var(--ink); text-align:left; }
+  .info { display:flex; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:.9rem; margin-top:10px; }
+  .avatar { width:42px; height:42px; border-radius:50%; object-fit:cover; flex:none; background:#d3e3cf; color:var(--pine-d); display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:1rem; border:2px solid #fff; box-shadow:0 0 0 1px var(--line); }
+  .avatar.big { width:110px; height:110px; font-size:2.4rem; border-width:3px; }
+  .phead { display:flex; align-items:center; gap:10px; }
+  details.more { margin-top:8px; }
+  details.more summary { cursor:pointer; color:var(--pine-d); font-weight:600; font-size:.88rem; }
+  details.more textarea { min-height:80px; margin-top:8px; }
+  .filebtn { position:relative; overflow:hidden; }
+  .filebtn input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+  select { width:100%; font:inherit; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:24px; }
+  a { color: var(--red); }
+</style>
+</head>
+<body>
+<div class="top">
+  <header>
+    <div class="logo"><svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path d="M24 4l5.3 11.6 12.7 1.3-9.5 8.6 2.7 12.5L24 31.6 12.8 38l2.7-12.5L6 16.9l12.7-1.3z" fill="#bfa564"/></svg></div>
+    <h1 id="title">Amigo Secreto</h1>
+    <p id="subtitle">Sorteio, lista de desejos e resultado no WhatsApp ou e-mail</p>
+  </header>
+</div>
+<main>
+  <div id="app"><div class="card muted" style="text-align:center">Carregando…</div></div>
+  <footer>Cada pessoa só vê quem tirou no próprio link secreto.</footer>
+</main>
+
+<script>
+// ====== CONFIGURAÇÃO ======
+// Grupos com mais de 10 pessoas pagam R$ 9,90 (Pix do Mercado Pago, liberação automática).
+const LIMITE_GRATIS = 10;
+// ==========================
+
+const $app = document.getElementById("app");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const baseUrl = location.origin + location.pathname;
+const params = new URLSearchParams(location.search);
+
+async function rpc(fn, args) {
+  const r = await fetch(`/api/rpc/${fn}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(args || {})
+  });
+  const txt = await r.text();
+  const data = txt ? JSON.parse(txt) : null;
+  if (!r.ok) throw new Error((data && data.message) || "Erro ao falar com o servidor");
+  return data;
+}
+
+function store(key, val) { try { val === undefined ? localStorage.removeItem(key) : localStorage.setItem(key, val); } catch {} }
+function load(key) { try { return localStorage.getItem(key); } catch { return null; } }
+
+async function copy(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  if (btn) { const o = btn.textContent; btn.textContent = "Copiado!"; setTimeout(() => btn.textContent = o, 1500); }
+}
+
+function contactLinks(contato, msg, subject) {
+  const c = (contato || "").trim();
+  if (!c) return null;
+  if (c.includes("@")) return { kind: "email", href: `mailto:${encodeURIComponent(c)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}` };
+  let d = c.replace(/\D/g, "");
+  if (d.length === 10 || d.length === 11) d = "55" + d; // número brasileiro sem DDI
+  if (d.length < 10) return null;
+  return { kind: "wa", href: `https://wa.me/${d}?text=${encodeURIComponent(msg)}` };
+}
+
+function avatarHTML(nome, foto, cls = "") {
+  if (foto) return `<img class="avatar ${cls}" src="${esc(foto)}" alt="Foto de ${esc(nome)}">`;
+  const ini = String(nome || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  return `<span class="avatar ${cls}" aria-hidden="true">${esc(ini)}</span>`;
+}
+
+// Reduz a foto no navegador (até 256px, JPEG) antes de salvar
+function lerFoto(file) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith("image/")) return reject(new Error("Escolha uma imagem"));
+    const img = new Image();
+    img.onload = () => {
+      const max = 256, k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(img.src);
+      resolve(c.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = () => reject(new Error("Não deu para abrir essa imagem"));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function infoLine(g) {
+  const parts = [];
+  if (g.valor) parts.push(`<b>Valor:</b> ${esc(g.valor)}`);
+  if (g.data_evento) parts.push(`<b>Data:</b> ${esc(g.data_evento)}`);
+  return parts.length ? `<div class="info">${parts.map(p => `<span>${p}</span>`).join("")}</div>` : "";
+}
+
+// ---------- Tela inicial: criar grupo ----------
+function renderHome() {
+  const saved = JSON.parse(load("amigo_grupos") || "[]");
+  $app.innerHTML = `
+    <div class="card">
+      <h2>Criar um amigo secreto</h2>
+      <form id="f">
+        <label for="nome">Nome do grupo</label>
+        <input id="nome" required maxlength="120" placeholder="Ex.: Natal da família 2026">
+        <div class="row">
+          <div><label for="valor">Valor do presente (opcional)</label><input id="valor" maxlength="60" placeholder="Ex.: até R$ 100"></div>
+          <div><label for="data">Data da troca (opcional)</label><input id="data" maxlength="60" placeholder="Ex.: 24/12 às 20h"></div>
+        </div>
+        <button class="full" type="submit">Criar grupo</button>
+        <div id="msg"></div>
+      </form>
+    </div>
+    ${saved.length ? `<div class="card"><h2>Seus grupos neste aparelho</h2><ul class="people">${saved.map(s =>
+      `<li><a href="?g=${esc(s.t)}">${esc(s.n)}</a></li>`).join("")}</ul></div>` : ""}
+    <div class="card">
+      <h2>Como funciona</h2>
+      <ol class="muted" style="margin:0;padding-left:20px">
+        <li>Crie o grupo e cadastre os participantes com WhatsApp ou e-mail.</li>
+        <li>Mande para cada pessoa o link secreto dela. Lá ela escreve o que quer ganhar.</li>
+        <li>Clique em <b>Sortear</b>. Ninguém tira a si mesmo.</li>
+        <li>Avise todo mundo: cada link passa a mostrar quem a pessoa tirou e a lista de desejos do amigo.</li>
+      </ol>
+    </div>`;
+  document.getElementById("f").onsubmit = async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector("button"); btn.disabled = true;
+    try {
+      const nome = document.getElementById("nome").value;
+      const r = await rpc("criar_grupo", { p_nome: nome, p_valor: document.getElementById("valor").value, p_data: document.getElementById("data").value });
+      saved.unshift({ t: r.admin_token, n: nome.trim() });
+      store("amigo_grupos", JSON.stringify(saved.slice(0, 20)));
+      location.search = "?g=" + r.admin_token + "&novo=1";
+    } catch (err) { document.getElementById("msg").innerHTML = `<div class="err">${esc(err.message)}</div>`; btn.disabled = false; }
+  };
+}
+
+// ---------- Painel do organizador ----------
+async function renderAdmin(admin) {
+  let g;
+  try { g = await rpc("ver_grupo", { p_admin: admin }); }
+  catch (err) { $app.innerHTML = `<div class="card"><div class="err">${esc(err.message)}</div><a class="btn sec full" href="${esc(baseUrl)}">Voltar</a></div>`; return; }
+  document.getElementById("title").textContent = g.nome;
+  document.getElementById("subtitle").textContent = g.sorteado ? "Sorteio feito! Agora avise cada pessoa." : "Painel do organizador";
+  const adminLink = `${baseUrl}?g=${admin}`;
+  const isNew = params.get("novo") === "1";
+  const n = g.participantes.length;
+  const comDesejos = g.participantes.filter(p => p.tem_desejos).length;
+
+  const restricoes = g.restricoes || [];
+  const nomeDe = id => (g.participantes.find(p => p.id === id) || {}).nome || "?";
+  const people = g.participantes.map(p => {
+    const link = `${baseUrl}?p=${p.token}`;
+    const msg = g.sorteado
+      ? `Oi, ${p.nome}! O sorteio do amigo secreto "${g.nome}" foi feito!\nAbra seu link secreto para ver quem você tirou e o que a pessoa quer ganhar (não mostre pra ninguém!):\n${link}`
+      : `Oi, ${p.nome}! Você está no amigo secreto "${g.nome}".\nAbra seu link secreto e escreva o que você quer ganhar. Depois do sorteio, é nesse mesmo link que você vai ver quem tirou:\n${link}`;
+    const c = contactLinks(p.contato, msg, `Amigo secreto: ${g.nome}`);
+    return `<li>
+      <div class="phead">${avatarHTML(p.nome, p.foto)}<div>
+        <span class="pname">${esc(p.nome)}</span>
+        <span class="tag ${p.tem_desejos ? "yes" : ""}">${p.tem_desejos ? "lista preenchida" : "sem lista ainda"}</span>
+        ${p.contato ? `<div class="muted">${esc(p.contato)}</div>` : ""}
+      </div></div>
+      <details class="more"><summary>Lista de desejos e foto</summary>
+        <textarea data-wish="${esc(p.id)}" maxlength="2000" placeholder="O que ${esc(p.nome)} quer ganhar">${esc(p.desejos || "")}</textarea>
+        <div class="actions">
+          <button class="sm" data-savewish="${esc(p.id)}">Salvar lista</button>
+          <label class="btn sm sec filebtn">${p.foto ? "Trocar foto" : "Pôr foto"}<input type="file" accept="image/*" data-photo="${esc(p.id)}"></label>
+        </div>
+      </details>
+      <div class="actions">
+        ${c ? `<a class="btn sm ${c.kind === "wa" ? "wa" : ""}" href="${esc(c.href)}" target="_blank" rel="noopener">${c.kind === "wa" ? "Enviar no WhatsApp" : "Enviar por e-mail"}</a>` : ""}
+        <button class="sm sec" data-copy="${esc(msg)}">Copiar mensagem</button>
+        ${g.sorteado ? "" : `<button class="sm sec" data-del="${esc(p.id)}" data-name="${esc(p.nome)}">Remover</button>`}
+      </div>
+    </li>`;
+  }).join("");
+
+  $app.innerHTML = `
+    ${isNew ? `<div class="card ok" style="margin-top:0"><b>Grupo criado!</b> Guarde o link do painel abaixo: é com ele que você volta para gerenciar o grupo.</div>` : ""}
+    <div class="card">
+      <h2>Link do seu painel (só para você)</h2>
+      <div class="linkbox"><input readonly value="${esc(adminLink)}"><button class="sm sec" id="cpAdmin">Copiar</button></div>
+      ${infoLine(g)}
+    </div>
+    ${g.sorteado ? "" : `
+    <div class="card">
+      <h2>Adicionar participante</h2>
+      <form id="addf">
+        <div class="row">
+          <div><label for="pn">Nome</label><input id="pn" required maxlength="80" placeholder="Ex.: Maria"></div>
+          <div><label for="pc">WhatsApp ou e-mail</label><input id="pc" maxlength="120" placeholder="(11) 98765-4321 ou maria@email.com"></div>
+        </div>
+        <button class="full" type="submit">Adicionar</button>
+        <div id="addmsg"></div>
+      </form>
+    </div>`}
+    <div class="card">
+      <h2>Participantes (${n}${g.premium ? "" : ` de ${LIMITE_GRATIS} grátis`})</h2>
+      ${n ? `<p class="muted" style="margin-top:-6px">${comDesejos} de ${n} já preencheram a lista de desejos. Cada pessoa escreve a dela no link que recebe, ou você escreve por ela em "Lista de desejos e foto".</p><ul class="people">${people}</ul>` : `<p class="muted">Ninguém ainda. Adicione pelo menos 3 pessoas.</p>`}
+    </div>
+    ${n >= 2 ? `<div class="card">
+      <h2>Quem não pode tirar quem</h2>
+      <p class="muted" style="margin-top:-6px">Por exemplo, casais ou irmãos. Vale nos dois sentidos.</p>
+      ${restricoes.length ? `<ul class="people">${restricoes.map(r => `<li class="phead" style="justify-content:space-between">
+          <span>${esc(nomeDe(r.a_id))} e ${esc(nomeDe(r.b_id))} não se tiram</span>
+          ${g.sorteado ? "" : `<button class="sm sec" data-delr="${esc(r.id)}">Remover</button>`}</li>`).join("")}</ul>` : `<p class="muted">Nenhuma restrição.</p>`}
+      ${g.sorteado ? "" : `<form id="resf"><div class="row">
+          <div><label for="ra">Pessoa</label><select id="ra">${g.participantes.map(p => `<option value="${esc(p.id)}">${esc(p.nome)}</option>`).join("")}</select></div>
+          <div><label for="rb">não pode tirar</label><select id="rb">${g.participantes.map((p, i) => `<option value="${esc(p.id)}" ${i === 1 ? "selected" : ""}>${esc(p.nome)}</option>`).join("")}</select></div>
+        </div><button class="full sec" type="submit">Adicionar restrição</button><div id="resmsg"></div></form>`}
+    </div>` : ""}
+    <div class="card">
+      ${g.sorteado ? `
+        <h2>Sorteio feito</h2>
+        <p class="muted">Use os botões acima para avisar cada pessoa. Ninguém, nem você, vê o resultado aqui no painel.</p>
+        <button class="sec full" id="undo">Desfazer sorteio</button>
+        <div id="undoConfirm" class="hidden"><p class="err">Desfazer apaga o resultado atual. Quem já viu quem tirou vai ver outra pessoa depois de um novo sorteio. Tem certeza?</p>
+          <div class="row"><button id="undoYes">Sim, desfazer</button><button class="sec" id="undoNo">Cancelar</button></div></div>`
+      : `
+        <h2>Sortear</h2>
+        <p class="muted">Dica: espere todo mundo preencher a lista de desejos. As listas continuam editáveis depois do sorteio.</p>
+        <button class="full" id="draw" ${n < 3 ? "disabled" : ""}>Sortear agora</button>
+        <div id="drawConfirm" class="hidden"><p class="muted">Depois do sorteio não dá para adicionar ou remover pessoas sem desfazê-lo. Confirmar?</p>
+          <div class="row"><button id="drawYes">Sim, sortear</button><button class="sec" id="drawNo">Cancelar</button></div></div>`}
+      <div id="drawmsg"></div>
+    </div>`;
+
+  const showErr = (id, err) => document.getElementById(id).innerHTML = `<div class="err">${esc(err.message)}</div>`;
+  document.getElementById("cpAdmin").onclick = e => copy(adminLink, e.target);
+  $app.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copy(b.dataset.copy, b));
+  $app.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+    if (b.dataset.confirm !== "1") { b.dataset.confirm = "1"; b.textContent = "Confirmar remoção"; return; }
+    b.disabled = true;
+    try { await rpc("remover_participante", { p_admin: admin, p_id: b.dataset.del }); renderAdmin(admin); }
+    catch (err) { alert(err.message); b.disabled = false; }
+  });
+  $app.querySelectorAll("[data-savewish]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const ta = $app.querySelector(`[data-wish="${b.dataset.savewish}"]`);
+    try { await rpc("salvar_desejos_admin", { p_admin: admin, p_id: b.dataset.savewish, p_desejos: ta.value }); b.textContent = "Salvo!"; setTimeout(() => renderAdmin(admin), 700); }
+    catch (err) { b.textContent = err.message; b.disabled = false; }
+  });
+  $app.querySelectorAll("[data-photo]").forEach(inp => inp.onchange = async () => {
+    try { const foto = await lerFoto(inp.files[0]); await rpc("salvar_foto_admin", { p_admin: admin, p_id: inp.dataset.photo, p_foto: foto }); renderAdmin(admin); }
+    catch (err) { inp.parentElement.firstChild.textContent = err.message; }
+  });
+  $app.querySelectorAll("[data-delr]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await rpc("remover_restricao", { p_admin: admin, p_id: b.dataset.delr }); renderAdmin(admin); } catch (err) { b.disabled = false; }
+  });
+  const resf = document.getElementById("resf");
+  if (resf) resf.onsubmit = async e => {
+    e.preventDefault();
+    const btn = resf.querySelector("button"); btn.disabled = true;
+    try { await rpc("adicionar_restricao", { p_admin: admin, p_a: document.getElementById("ra").value, p_b: document.getElementById("rb").value }); renderAdmin(admin); }
+    catch (err) { showErr("resmsg", err); btn.disabled = false; }
+  };
+  const addf = document.getElementById("addf");
+  if (addf) addf.onsubmit = async e => {
+    e.preventDefault();
+    const btn = addf.querySelector("button"); btn.disabled = true;
+    try {
+      await rpc("adicionar_participante", { p_admin: admin, p_nome: document.getElementById("pn").value, p_contato: document.getElementById("pc").value });
+      await renderAdmin(admin);
+      document.getElementById("pn")?.focus();
+    } catch (err) {
+      if (err.message === "LIMITE_GRATIS") mostrarPagamento(admin, g.codigo);
+      else showErr("addmsg", err);
+      btn.disabled = false;
+    }
+  };
+  const toggle = (a, b) => { document.getElementById(a).classList.add("hidden"); document.getElementById(b).classList.remove("hidden"); };
+  if (g.sorteado) {
+    document.getElementById("undo").onclick = () => toggle("undo", "undoConfirm");
+    document.getElementById("undoNo").onclick = () => toggle("undoConfirm", "undo");
+    document.getElementById("undoYes").onclick = async e => {
+      e.target.disabled = true;
+      try { await rpc("desfazer_sorteio", { p_admin: admin }); renderAdmin(admin); } catch (err) { showErr("drawmsg", err); }
+    };
+  } else {
+    document.getElementById("draw").onclick = () => toggle("draw", "drawConfirm");
+    document.getElementById("drawNo").onclick = () => toggle("drawConfirm", "draw");
+    document.getElementById("drawYes").onclick = async e => {
+      e.target.disabled = true;
+      try { await rpc("sortear", { p_admin: admin }); history.replaceState(null, "", "?g=" + admin); params.delete("novo"); await renderAdmin(admin); window.scrollTo(0, 0); }
+      catch (err) { showErr("drawmsg", err); e.target.disabled = false; }
+    };
+  }
+}
+
+// Pagamento para liberar grupo grande (Mercado Pago)
+function pagamentoHTML(codigo) {
+  return `<div class="card" id="paybox" style="margin-top:12px;background:#f1f5ef">
+    <b>O plano grátis vai até ${LIMITE_GRATIS} pessoas.</b>
+    <p style="margin:6px 0">Para liberar este grupo (até 500 pessoas), pague <b>R$ 9,90</b> no Pix. O grupo é liberado sozinho assim que o pagamento cair.</p>
+    <form id="payf">
+      <label for="payemail">Seu e-mail (para o recibo do Mercado Pago)</label>
+      <input id="payemail" type="email" required placeholder="voce@email.com">
+      <button class="full" type="submit">Gerar Pix</button>
+    </form>
+    <div id="payqr" class="hidden" style="text-align:center">
+      <img id="payimg" alt="QR code do Pix" style="width:220px;height:220px;margin:12px auto;display:block;background:#fff;padding:8px;border-radius:10px">
+      <button type="button" class="sec full" id="paycopy">Copiar código Pix</button>
+      <p class="muted" id="paystatus" style="margin-top:12px">Aguardando o pagamento…</p>
+    </div>
+    <div id="paymsg"></div>
+  </div>`;
+}
+
+function mostrarPagamento(admin, codigo) {
+  document.getElementById("paybox")?.remove();
+  document.getElementById("addf").insertAdjacentHTML("afterend", pagamentoHTML(codigo));
+  ligarPagamento(admin);
+}
+
+function ligarPagamento(admin) {
+  const f = document.getElementById("payf"); if (!f) return;
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const btn = f.querySelector("button"); btn.disabled = true;
+    document.getElementById("paymsg").innerHTML = "";
+    try {
+      const r = await fetch("/api/pix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ admin_token: admin, email: document.getElementById("payemail").value })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.message || "Erro ao gerar o Pix");
+      if (d.premium) { renderAdmin(admin); return; }
+      f.classList.add("hidden");
+      document.getElementById("payimg").src = "data:image/png;base64," + d.qr_code_base64;
+      document.getElementById("payqr").classList.remove("hidden");
+      const cp = document.getElementById("paycopy"); cp.onclick = () => copy(d.qr_code, cp);
+      const timer = setInterval(async () => {
+        if (!document.getElementById("paybox")) { clearInterval(timer); return; }
+        try {
+          const g = await rpc("ver_grupo", { p_admin: admin });
+          if (g.premium) {
+            clearInterval(timer);
+            document.getElementById("paystatus").innerHTML = `<span class="ok" style="display:block">Pagamento confirmado. Grupo liberado!</span>`;
+            setTimeout(() => renderAdmin(admin), 1500);
+          }
+        } catch {}
+      }, 4000);
+    } catch (err) {
+      document.getElementById("paymsg").innerHTML = `<div class="err">${esc(err.message)}</div>`;
+      btn.disabled = false;
+    }
+  };
+}
+
+// ---------- Página do participante ----------
+async function renderParticipant(token) {
+  let p;
+  try { p = await rpc("ver_participante", { p_token: token }); }
+  catch (err) { $app.innerHTML = `<div class="card"><div class="err">${esc(err.message)}. Confira se você abriu o link completo que recebeu.</div></div>`; return; }
+  document.getElementById("title").textContent = `Olá, ${p.nome}!`;
+  document.getElementById("subtitle").textContent = `Amigo secreto: ${p.grupo}`;
+
+  $app.innerHTML = `
+    <div class="card">
+      ${p.sorteado && p.amigo ? `
+        <h2>Seu amigo secreto</h2>
+        <div id="cover" class="reveal">
+          <div>Pronto para descobrir?</div>
+          <button class="sec" style="margin-top:12px" id="show">Toque para revelar</button>
+        </div>
+        <div id="result" class="reveal hidden">
+          <div>Você tirou</div>
+          <div style="margin-top:10px">${avatarHTML(p.amigo.nome, p.amigo.foto, "big")}</div>
+          <div class="big">${esc(p.amigo.nome)}</div>
+          <div class="wishes">${p.amigo.desejos ? `<b>O que ${esc(p.amigo.nome)} quer ganhar:</b>\n${esc(p.amigo.desejos)}` : `${esc(p.amigo.nome)} ainda não escreveu a lista de desejos. Volte a este link mais tarde.`}</div>
+          <button class="sec sm" style="margin-top:12px" id="hide">Esconder</button>
+        </div>`
+      : `<h2>O sorteio ainda não foi feito</h2><p class="muted" style="margin:0">Quando o organizador sortear, volte a este mesmo link para ver quem você tirou.</p>`}
+      ${infoLine(p)}
+    </div>
+    <div class="card">
+      <h2>Sua foto</h2>
+      <div class="phead">${avatarHTML(p.nome, p.foto, "big")}
+        <div><p class="muted" style="margin:0 0 8px">Assim quem tirar você sabe quem é quem.</p>
+        <label class="btn sm sec filebtn">${p.foto ? "Trocar foto" : "Pôr foto"}<input type="file" accept="image/*" id="myphoto"></label>
+        <div id="fmsg"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>O que você quer ganhar?</h2>
+      <p class="muted" style="margin-top:-6px">Quem tirar você vai ver esta lista. Dê algumas opções, tamanhos e links.</p>
+      <form id="wf">
+        <textarea id="w" maxlength="2000" placeholder="Ex.:\n- Livro de receitas\n- Camiseta tamanho M\n- Vinho tinto">${esc(p.desejos)}</textarea>
+        <button class="full" type="submit">Salvar minha lista</button>
+        <div id="wmsg"></div>
+      </form>
+    </div>
+    <p class="muted" style="text-align:center">Guarde este link. Ele é só seu.</p>`;
+
+  const show = document.getElementById("show");
+  if (show) {
+    show.onclick = () => { document.getElementById("cover").classList.add("hidden"); document.getElementById("result").classList.remove("hidden"); };
+    document.getElementById("hide").onclick = () => { document.getElementById("result").classList.add("hidden"); document.getElementById("cover").classList.remove("hidden"); };
+  }
+  document.getElementById("myphoto").onchange = async e => {
+    try { const foto = await lerFoto(e.target.files[0]); await rpc("salvar_foto", { p_token: token, p_foto: foto }); renderParticipant(token); }
+    catch (err) { document.getElementById("fmsg").innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+  };
+  document.getElementById("wf").onsubmit = async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector("button"); btn.disabled = true;
+    try { await rpc("salvar_desejos", { p_token: token, p_desejos: document.getElementById("w").value });
+      document.getElementById("wmsg").innerHTML = `<div class="ok">Lista salva.</div>`; }
+    catch (err) { document.getElementById("wmsg").innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+    btn.disabled = false;
+  };
+}
+
+if (params.get("p")) renderParticipant(params.get("p"));
+else if (params.get("g")) renderAdmin(params.get("g"));
+else renderHome();
+</script>
+</body>
+</html>

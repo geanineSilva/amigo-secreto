@@ -50,6 +50,15 @@
   .reveal .big { font-family: Fraunces, Georgia, serif; font-size: 2.2rem; font-weight:700; margin: 6px 0 10px; color:#fff6dc; }
   .wishes { white-space: pre-wrap; background:var(--card); border-radius:10px; padding:12px 14px; margin-top:10px; color:var(--ink); text-align:left; }
   .info { display:flex; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:.9rem; margin-top:10px; }
+  .avatar { width:42px; height:42px; border-radius:50%; object-fit:cover; flex:none; background:#d3e3cf; color:var(--pine-d); display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:1rem; border:2px solid #fff; box-shadow:0 0 0 1px var(--line); }
+  .avatar.big { width:110px; height:110px; font-size:2.4rem; border-width:3px; }
+  .phead { display:flex; align-items:center; gap:10px; }
+  details.more { margin-top:8px; }
+  details.more summary { cursor:pointer; color:var(--pine-d); font-weight:600; font-size:.88rem; }
+  details.more textarea { min-height:80px; margin-top:8px; }
+  .filebtn { position:relative; overflow:hidden; }
+  .filebtn input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+  select { width:100%; font:inherit; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
   footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:24px; }
   a { color: var(--red); }
 </style>
@@ -109,6 +118,30 @@ function contactLinks(contato, msg, subject) {
   if (d.length === 10 || d.length === 11) d = "55" + d; // número brasileiro sem DDI
   if (d.length < 10) return null;
   return { kind: "wa", href: `https://wa.me/${d}?text=${encodeURIComponent(msg)}` };
+}
+
+function avatarHTML(nome, foto, cls = "") {
+  if (foto) return `<img class="avatar ${cls}" src="${esc(foto)}" alt="Foto de ${esc(nome)}">`;
+  const ini = String(nome || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  return `<span class="avatar ${cls}" aria-hidden="true">${esc(ini)}</span>`;
+}
+
+// Reduz a foto no navegador (até 256px, JPEG) antes de salvar
+function lerFoto(file) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith("image/")) return reject(new Error("Escolha uma imagem"));
+    const img = new Image();
+    img.onload = () => {
+      const max = 256, k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(img.src);
+      resolve(c.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = () => reject(new Error("Não deu para abrir essa imagem"));
+    img.src = URL.createObjectURL(file);
+  });
 }
 
 function infoLine(g) {
@@ -171,6 +204,8 @@ async function renderAdmin(admin) {
   const n = g.participantes.length;
   const comDesejos = g.participantes.filter(p => p.tem_desejos).length;
 
+  const restricoes = g.restricoes || [];
+  const nomeDe = id => (g.participantes.find(p => p.id === id) || {}).nome || "?";
   const people = g.participantes.map(p => {
     const link = `${baseUrl}?p=${p.token}`;
     const msg = g.sorteado
@@ -178,9 +213,18 @@ async function renderAdmin(admin) {
       : `Oi, ${p.nome}! Você está no amigo secreto "${g.nome}".\nAbra seu link secreto e escreva o que você quer ganhar. Depois do sorteio, é nesse mesmo link que você vai ver quem tirou:\n${link}`;
     const c = contactLinks(p.contato, msg, `Amigo secreto: ${g.nome}`);
     return `<li>
-      <span class="pname">${esc(p.nome)}</span>
-      <span class="tag ${p.tem_desejos ? "yes" : ""}">${p.tem_desejos ? "lista preenchida" : "sem lista ainda"}</span>
-      ${p.contato ? `<div class="muted">${esc(p.contato)}</div>` : ""}
+      <div class="phead">${avatarHTML(p.nome, p.foto)}<div>
+        <span class="pname">${esc(p.nome)}</span>
+        <span class="tag ${p.tem_desejos ? "yes" : ""}">${p.tem_desejos ? "lista preenchida" : "sem lista ainda"}</span>
+        ${p.contato ? `<div class="muted">${esc(p.contato)}</div>` : ""}
+      </div></div>
+      <details class="more"><summary>Lista de desejos e foto</summary>
+        <textarea data-wish="${esc(p.id)}" maxlength="2000" placeholder="O que ${esc(p.nome)} quer ganhar">${esc(p.desejos || "")}</textarea>
+        <div class="actions">
+          <button class="sm" data-savewish="${esc(p.id)}">Salvar lista</button>
+          <label class="btn sm sec filebtn">${p.foto ? "Trocar foto" : "Pôr foto"}<input type="file" accept="image/*" data-photo="${esc(p.id)}"></label>
+        </div>
+      </details>
       <div class="actions">
         ${c ? `<a class="btn sm ${c.kind === "wa" ? "wa" : ""}" href="${esc(c.href)}" target="_blank" rel="noopener">${c.kind === "wa" ? "Enviar no WhatsApp" : "Enviar por e-mail"}</a>` : ""}
         <button class="sm sec" data-copy="${esc(msg)}">Copiar mensagem</button>
@@ -210,8 +254,19 @@ async function renderAdmin(admin) {
     </div>`}
     <div class="card">
       <h2>Participantes (${n}${g.premium ? "" : ` de ${LIMITE_GRATIS} grátis`})</h2>
-      ${n ? `<p class="muted" style="margin-top:-6px">${comDesejos} de ${n} já preencheram a lista de desejos.</p><ul class="people">${people}</ul>` : `<p class="muted">Ninguém ainda. Adicione pelo menos 3 pessoas.</p>`}
+      ${n ? `<p class="muted" style="margin-top:-6px">${comDesejos} de ${n} já preencheram a lista de desejos. Cada pessoa escreve a dela no link que recebe, ou você escreve por ela em "Lista de desejos e foto".</p><ul class="people">${people}</ul>` : `<p class="muted">Ninguém ainda. Adicione pelo menos 3 pessoas.</p>`}
     </div>
+    ${n >= 2 ? `<div class="card">
+      <h2>Quem não pode tirar quem</h2>
+      <p class="muted" style="margin-top:-6px">Por exemplo, casais ou irmãos. Vale nos dois sentidos.</p>
+      ${restricoes.length ? `<ul class="people">${restricoes.map(r => `<li class="phead" style="justify-content:space-between">
+          <span>${esc(nomeDe(r.a_id))} e ${esc(nomeDe(r.b_id))} não se tiram</span>
+          ${g.sorteado ? "" : `<button class="sm sec" data-delr="${esc(r.id)}">Remover</button>`}</li>`).join("")}</ul>` : `<p class="muted">Nenhuma restrição.</p>`}
+      ${g.sorteado ? "" : `<form id="resf"><div class="row">
+          <div><label for="ra">Pessoa</label><select id="ra">${g.participantes.map(p => `<option value="${esc(p.id)}">${esc(p.nome)}</option>`).join("")}</select></div>
+          <div><label for="rb">não pode tirar</label><select id="rb">${g.participantes.map((p, i) => `<option value="${esc(p.id)}" ${i === 1 ? "selected" : ""}>${esc(p.nome)}</option>`).join("")}</select></div>
+        </div><button class="full sec" type="submit">Adicionar restrição</button><div id="resmsg"></div></form>`}
+    </div>` : ""}
     <div class="card">
       ${g.sorteado ? `
         <h2>Sorteio feito</h2>
@@ -237,6 +292,27 @@ async function renderAdmin(admin) {
     try { await rpc("remover_participante", { p_admin: admin, p_id: b.dataset.del }); renderAdmin(admin); }
     catch (err) { alert(err.message); b.disabled = false; }
   });
+  $app.querySelectorAll("[data-savewish]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const ta = $app.querySelector(`[data-wish="${b.dataset.savewish}"]`);
+    try { await rpc("salvar_desejos_admin", { p_admin: admin, p_id: b.dataset.savewish, p_desejos: ta.value }); b.textContent = "Salvo!"; setTimeout(() => renderAdmin(admin), 700); }
+    catch (err) { b.textContent = err.message; b.disabled = false; }
+  });
+  $app.querySelectorAll("[data-photo]").forEach(inp => inp.onchange = async () => {
+    try { const foto = await lerFoto(inp.files[0]); await rpc("salvar_foto_admin", { p_admin: admin, p_id: inp.dataset.photo, p_foto: foto }); renderAdmin(admin); }
+    catch (err) { inp.parentElement.firstChild.textContent = err.message; }
+  });
+  $app.querySelectorAll("[data-delr]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await rpc("remover_restricao", { p_admin: admin, p_id: b.dataset.delr }); renderAdmin(admin); } catch (err) { b.disabled = false; }
+  });
+  const resf = document.getElementById("resf");
+  if (resf) resf.onsubmit = async e => {
+    e.preventDefault();
+    const btn = resf.querySelector("button"); btn.disabled = true;
+    try { await rpc("adicionar_restricao", { p_admin: admin, p_a: document.getElementById("ra").value, p_b: document.getElementById("rb").value }); renderAdmin(admin); }
+    catch (err) { showErr("resmsg", err); btn.disabled = false; }
+  };
   const addf = document.getElementById("addf");
   if (addf) addf.onsubmit = async e => {
     e.preventDefault();
@@ -350,12 +426,21 @@ async function renderParticipant(token) {
         </div>
         <div id="result" class="reveal hidden">
           <div>Você tirou</div>
+          <div style="margin-top:10px">${avatarHTML(p.amigo.nome, p.amigo.foto, "big")}</div>
           <div class="big">${esc(p.amigo.nome)}</div>
           <div class="wishes">${p.amigo.desejos ? `<b>O que ${esc(p.amigo.nome)} quer ganhar:</b>\n${esc(p.amigo.desejos)}` : `${esc(p.amigo.nome)} ainda não escreveu a lista de desejos. Volte a este link mais tarde.`}</div>
           <button class="sec sm" style="margin-top:12px" id="hide">Esconder</button>
         </div>`
       : `<h2>O sorteio ainda não foi feito</h2><p class="muted" style="margin:0">Quando o organizador sortear, volte a este mesmo link para ver quem você tirou.</p>`}
       ${infoLine(p)}
+    </div>
+    <div class="card">
+      <h2>Sua foto</h2>
+      <div class="phead">${avatarHTML(p.nome, p.foto, "big")}
+        <div><p class="muted" style="margin:0 0 8px">Assim quem tirar você sabe quem é quem.</p>
+        <label class="btn sm sec filebtn">${p.foto ? "Trocar foto" : "Pôr foto"}<input type="file" accept="image/*" id="myphoto"></label>
+        <div id="fmsg"></div></div>
+      </div>
     </div>
     <div class="card">
       <h2>O que você quer ganhar?</h2>
@@ -373,6 +458,10 @@ async function renderParticipant(token) {
     show.onclick = () => { document.getElementById("cover").classList.add("hidden"); document.getElementById("result").classList.remove("hidden"); };
     document.getElementById("hide").onclick = () => { document.getElementById("result").classList.add("hidden"); document.getElementById("cover").classList.remove("hidden"); };
   }
+  document.getElementById("myphoto").onchange = async e => {
+    try { const foto = await lerFoto(e.target.files[0]); await rpc("salvar_foto", { p_token: token, p_foto: foto }); renderParticipant(token); }
+    catch (err) { document.getElementById("fmsg").innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+  };
   document.getElementById("wf").onsubmit = async e => {
     e.preventDefault();
     const btn = e.target.querySelector("button"); btn.disabled = true;
